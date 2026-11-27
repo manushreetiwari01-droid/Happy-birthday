@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday✨</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    background: radial-gradient(circle at center, #1e132b 0%, #0b0612 100%);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.8rem, 7vw, 4.5rem);
+    color: #ffd166;
+    text-shadow: 0 0 20px rgba(255, 209, 102, 0.5);
+    margin-bottom: 5px;
+    z-index: 2;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: #d8c3e8;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
+    z-index: 2;
+  }
+
+  /* Cake Container */
+  .cake-container {
+    position: relative;
+    width: 260px;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 20px 0 30px;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  /* Candle */
+  .candle-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: -4px;
+    z-index: 5;
+  }
+
+  .flame-glow {
+    position: absolute;
+    top: -45px;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, rgba(255, 190, 60, 0.45) 0%, rgba(255, 120, 0, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .flame {
+    width: 18px;
+    height: 36px;
+    background: radial-gradient(ellipse at bottom, #fff 10%, #ffd166 45%, #ff6b35 85%, transparent 100%);
+    border-radius: 50% 50% 35% 35% / 65% 65% 35% 35%;
+    box-shadow: 0 0 18px #ff9f1c, 0 0 35px #ffbf69;
+    transform-origin: bottom center;
+    animation: flicker 0.15s infinite alternate;
+    transition: transform 0.1s ease, opacity 0.3s ease;
+  }
+
+  @keyframes flicker {
+    0% { transform: scale(1) rotate(-1.5deg); }
+    100% { transform: scale(1.04, 0.96) rotate(1.5deg); }
+  }
+
+  .smoke {
+    position: absolute;
+    top: -20px;
+    width: 8px;
+    height: 8px;
+    background: rgba(220, 220, 230, 0.6);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .smoke.rise {
+    animation: smokeRise 2.2s ease-out forwards;
+  }
+
+  @keyframes smokeRise {
+    0% { opacity: 0.8; transform: translateY(0) scale(1); }
+    50% { opacity: 0.4; transform: translateY(-35px) translateX(8px) scale(2.2); }
+    100% { opacity: 0; transform: translateY(-75px) translateX(-6px) scale(3.5); }
+  }
+
+  .wick {
+    width: 3px;
+    height: 8px;
+    background: #2b2b2b;
+    border-radius: 2px;
+  }
+
+  .candle-body {
+    width: 24px;
+    height: 55px;
+    background: repeating-linear-gradient(
+      45deg,
+      #fff,
+      #fff 6px,
+      #ff758f 6px,
+      #ff758f 12px
+    );
+    border-radius: 4px 4px 0 0;
+    box-shadow: inset -4px 0 6px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 11px;
+    color: #590d22;
+  }
+
+  /* Cake Tiers */
+  .cake-top {
+    width: 170px;
+    height: 55px;
+    background: linear-gradient(to right, #ff8fa3, #ffb3c1, #ff758f);
+    border-radius: 12px 12px 4px 4px;
+    position: relative;
+    box-shadow: inset 0 -6px 10px rgba(0,0,0,0.12);
+    z-index: 4;
+  }
+
+  .icing-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    background: #fff0f3;
+    border-radius: 12px 12px 8px 8px;
+  }
+
+  .cake-bottom {
+    width: 230px;
+    height: 70px;
+    background: linear-gradient(to right, #c9184a, #ff4d6d, #a4133c);
+    border-radius: 12px 12px 6px 6px;
+    position: relative;
+    margin-top: -3px;
+    box-shadow: inset 0 -8px 14px rgba(0,0,0,0.2);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icing-bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    background: #ffe5ec;
+    border-radius: 10px 10px 8px 8px;
+  }
+
+  .cake-badge {
+    background: rgba(255, 255, 255, 0.9);
+    color: #800f2f;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-top: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .plate {
+    width: 270px;
+    height: 14px;
+    background: linear-gradient(to right, #adb5bd, #f8f9fa, #adb5bd);
+    border-radius: 50%;
+    margin-top: -2px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    z-index: 2;
+  }
+
+  /* Controls & Message */
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 5;
+  }
+
+  button {
+    background: linear-gradient(135deg, #ff4d6d, #c9184a);
+    color: #fff;
+    border: none;
+    padding: 12px 26px;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 77, 109, 0.6);
+  }
+
+  .status-text {
+    font-size: 0.85rem;
+    color: #b8a3c9;
+  }
+
+  .wish-message {
+    display: none;
+    max-width: 460px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 209, 102, 0.35);
+    padding: 18px 22px;
+    border-radius: 16px;
+    margin-top: 15px;
+    animation: fadeIn 1s ease forwards;
+    z-index: 5;
+  }
+
+  .wish-message h2 {
+    color: #ffd166;
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+  }
+
+  .wish-message p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #f3e8ff;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="title">Happy Birthday</div>
+<div class="subtitle">Make a wish & blow the candle ✨</div>
+
+<div class="cake-container" id="cake" title="Tap candle to blow out">
+  <div class="candle-wrapper">
+    <div class="flame-glow" id="flameGlow"></div>
+    <div class="flame" id="flame"></div>
+    <div class="smoke" id="smoke"></div>
+    <div class="wick"></div>
+    <div class="candle-body"></div>
+  </div>
+  <div class="cake-top">
+    <div class="icing-top"></div>
+  </div>
+  <div class="cake-bottom">
+    <div class="icing-bottom"></div>
+  </div>
+  <div class="plate"></div>
+</div>
+
+<div class="controls">
+  <button id="micBtn">🎙️ Enable Mic to Blow Candle</button>
+  <div class="status-text" id="statusText">Click the button above & blow into the mic (or tap the flame)</div>
+</div>
+
+<div class="wish-message" id="wishMessage">
+  <h2>🎉 Happy Birthday 🎉</h2>
+  <p>May all your wishes come true this year and always. Even from miles away, I’m right here celebrating you! ❤️ </p>
+  <button id="relightBtn" style="margin-top: 14px; padding: 8px 18px; font-size: 0.8rem;">🕯️ Light Candle Again</button>
+</div>
+
+<script>
+  const flame = document.getElementById('flame');
+  const flameGlow = document.getElementById('flameGlow');
+  const smoke = document.getElementById('smoke');
+  const micBtn = document.getElementById('micBtn');
+  const statusText = document.getElementById('statusText');
+  const wishMessage = document.getElementById('wishMessage');
+  const relightBtn = document.getElementById('relightBtn');
+  const cake = document.getElementById('cake');
+
+  let isBlownOut = false;
+  let audioContext, analyser, microphone, dataArray;
+  let blowFrames = 0;
+
+  // Enable Microphone
+  micBtn.addEventListener('click', async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioContext.createAnalyser();
+      microphone = audioContext.createMediaStreamSource(stream);
+      analyser.fftSize = 256;
+      microphone.connect(analyser);
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      micBtn.style.display = 'none';
+      statusText.textContent = '🌬️ Mic is active! Blow gently toward the screen...';
+      detectBlow();
+    } catch (err) {
+      statusText.textContent = 'Mic blocked — no worries, just tap the flame to blow it out!';
+    }
+  });
+
+  function detectBlow() {
+    if (!analyser) return;
+    requestAnimationFrame(detectBlow);
+
+    if (isBlownOut) return;
+
+    analyser.getByteFrequencyData(dataArray);
+    // Focus on low frequencies where wind/blowing noise concentrates
+    let lowSum = 0;
+    for (let i = 0; i < 15; i++) {
+      lowSum += dataArray[i];
+    }
+    const avg = lowSum / 15;
+
+    if (avg > 95) {
+      // Flame tilts as user blows
+      flame.style.transform = `scale(0.85, 1.15) skewX(${(Math.random() - 0.5) * 45}deg)`;
+      blowFrames++;
+      if (blowFrames > 14) {
+        extinguishCandle();
+      }
+    } else {
+      flame.style.transform = '';
+      blowFrames = Math.max(0, blowFrames - 1);
+    }
+  }
+
+  // Fallback tap on cake/flame
+  cake.addEventListener('click', () => {
+    if (!isBlownOut) extinguishCandle();
+  });
+
+  function extinguishCandle() {
+    isBlownOut = true;
+    flame.style.opacity = '0';
+    flameGlow.style.opacity = '0';
+    smoke.classList.remove('rise');
+    void smoke.offsetWidth;
+    smoke.classList.add('rise');
+
+    statusText.style.display = 'none';
+    micBtn.style.display = 'none';
+    wishMessage.style.display = 'block';
+
+    launchConfetti();
+    playBirthdayTune();
+  }
+
+  relightBtn.addEventListener('click', () => {
+    isBlownOut = false;
+    blowFrames = 0;
+    flame.style.opacity = '1';
+    flameGlow.style.opacity = '1';
+    wishMessage.style.display = 'none';
+    statusText.style.display = 'block';
+    statusText.textContent = '🌬️ Blow again or tap the flame!';
+  });
+
+  // Soft Web Audio Happy Birthday Melody
+  function playBirthdayTune() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [
+      { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.3 }, { f: 293.66, d: 0.6 },
+      { f: 261.63, d: 0.6 }, { f: 349.23, d: 0.6 }, { f: 329.63, d: 1.0 },
+      { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.3 }, { f: 293.66, d: 0.6 },
+      { f: 261.63, d: 0.6 }, { f: 392.00, d: 0.6 }, { f: 349.23, d: 1.0 }
+    ];
+    let time = ctx.currentTime + 0.1;
+    notes.forEach(n => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(n.f, time);
+      gain.gain.setValueAtTime(0.15, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + n.d);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(time);
+      osc.stop(time + n.d);
+      time += n.d + 0.05;
+    });
+  }
+
+  // Confetti Animation
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function launchConfetti() {
+    const colors = ['#ffd166', '#ff4d6d', '#06d6a0', '#118ab2', '#ffffff', '#f72585'];
+    for (let i = 0; i < 140; i++) {
+      particles.push({
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        vx: (Math.random() - 0.5) * 14,
+        vy: (Math.random() - 0.7) * 14,
+        size: Math.random() * 7 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        vRot: (Math.random() - 0.5) * 10
+      });
+    }
+    animateConfetti();
+  }
+
+  function animateConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, idx) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.25; // gravity
+      p.rotation += p.vRot;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+      ctx.restore();
+
+      if (p.y > canvas.height + 20) {
+        particles.splice(idx, 1);
+      }
+    });
+    if (particles.length > 0) {
+      requestAnimationFrame(animateConfetti);
+    }
+  }
+</script>
+</body>
+</html>
